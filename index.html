@@ -16,6 +16,7 @@
 
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+        <link rel="stylesheet" href="lib/css/zenburn.css">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -28,6 +29,11 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+        <style>
+            .highlight {
+                color: #93a1a1;
+            }
+        </style>
 	</head>
 
 	<body>
@@ -40,7 +46,7 @@
 					<h1>HTTP is one thing</h1>
 					<h3>Resource Oriented Application Framework</h3>
 					<p>
-						<small>Created by <a href="http://hakim.se">Akihito Koriyama</a> / <a href="http://twitter.com/koriym">@koriym</a></small>
+						<small><a href="http://hakim.se">Akihito Koriyama</a> / <a href="http://twitter.com/koriym">@koriym</a></small>
 					</p>
 				</section>
 
@@ -74,8 +80,9 @@
                 </section>
 
                 <section>
-                    <h2>[H]</span>ADD</h2>
-                    <p>[Hyper] API Driven Development</p>
+
+                    <h2>HADD</h2>
+                    <p>Hypermedia API Driven Development</p>
                     <aside class="notes">
                         API's are great but in order to gain a richer service environment then going the next step of introducing hypermedia into our API's is important.
                         We could call this HADD.
@@ -108,30 +115,55 @@
                 </section>
 
                 <section>
+                    <h2>REST Constraints</h2>
                     <ul>
                         <li class="fragment">Addressability</li>
                         <li class="fragment">Unified Interface</li>
                         <li class="fragment">Stateless Request</li>
                         <li class="fragment"><strong>Connectedness</strong></li>
                     </ul>
+                    <div style="height: 40px"></div>
                     <p class="fragment">...to Object</p>
                     <aside class="notes">
                     </aside>
                 </section>
 
                 <section>
-                    <h2>Everything is a resource</h2>
-                    <ul>
-                        <li><del>MVC</del></li>
-                        <li>[R]</li>
-                    </ul>
-                    <aside class="notes">
-                    </aside>
-                </section>
+                    <section>
+                        <h2>Everything is a resource</h2>
+                        <ul>
+                            <li><del>MVC</del></li>
+                            <li>[R]</li>
+                        </ul>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Object as a service</h2>
+                        <pre><code style="width: 120%">
+class Order
+{
+    /**
+     * @Link(rel="payment", href="app://self/payment{?order_id, card_number}", method="put")
+     */
+    public function onPost($drink)
+    {
+        // component layer (business logic)
+        ...
+        $this->code = 201;
+        return $this;
 
-                <section>
-                <h2>Hypermedia as the Engine of Application State</h2>
-                <pre><code contenteditable>
+                        </pre></code>
+                    </section>
+                    <section>
+                    <h2><span class="highlight">H</span>ypermedia<br>
+                        <span class="highlight">A</span>s
+                        <span class="highlight">T</span>he
+                        <span class="highlight">E</span>ngine
+                        <span class="highlight">O</span>f
+                        <span class="highlight">A</span>pplication
+                        <span class="highlight">S</span>tate</h2>
+                    <pre><code contenteditable>
 $order = $resource
     ->post
     ->uri('app://self/order')
@@ -140,20 +172,38 @@ $order = $resource
     ->request();
 
 $payment = [
-    'credit_card_number' => '123456789',
-    'expires' => '07/07',
-    'name' => 'Koriym',
-    'amount' => '4.00'
+    'credit_card_number' => '123456789'
 ];
 
-$response = $order->href('pay', $payment);
+$response = $resource->href('pay', $payment);
+
 echo $response->code; // 201 Created
-                </code></pre>
+                    </code></pre>
+                    </section>
+                    <section>
+                        <h2>Representation</h2>
+                        <pre><code>
+    echo $resourceObject;
+
+    // html / json / xml
+                    </code></pre>
+                    </section>
                 </section>
                 <section>
-                    <h2>Demo</h2>
+                    <section>
+                        <h2>Screen</h2>
+                    </section>
+                    <section>
+                        <iframe src="html/entry.html" height=1024 width=1024>
+                        </iframe>
+                    </section>
+                    <section>
+                        <img src="img/resource-browser.png" />
+                    </section>
+                    <section>
+                        <img src="img/pen-online.png" />
+                    </section>
                 </section>
-
                 <section>
                     <h2>The Key of success of web</h2>
                 <ul>
@@ -166,14 +216,17 @@ echo $response->code; // 201 Created
                 </section>
 
                 <section>
-                    <h2> Hypermedia for productivity</h2>
-                    <code>
-
-                    </code>
-                    <p>[Order] -> [Payment]</p>
-                    <aside class="notes">
-                        It’s easy to manage relationships between resources
-                    </aside>
+                    <section>
+                        <h2> Hypermedia for productivity</h2>
+                        <ul>
+                            <li class="fragment">Sequence management</li>
+                            <li class="fragment">Marshaling tool</li>
+                            <li class="fragment">Decoupling components</li>
+                        </ul>
+                        <aside class="notes">
+                            It’s easy to manage relationships between resources
+                        </aside>
+                    </section>
                 </section>
 
                 <section>
@@ -185,8 +238,7 @@ echo $response->code; // 201 Created
                 </section>
 
                 <section>
-                    <h2>Time for new paradigm ?</h2>
-                        <p>The API is core, REST is central.</p>
+                    <h2>The API is core,<br> REST is central.</h2>
                     <aside class="notes">
                         Resource oriented framework ?
                         REST application framework ?
@@ -194,8 +246,9 @@ echo $response->code; // 201 Created
                         REST centered architecture.
                     </aside>
                 </section>
-				<section>
-					<h3><a href="http://bearsunday.github.io/">bearsunday.github.io</a></h3>
+				<section data-transition="linear" data-background="white" data-background-transition="slide">
+                    <img src="img/BEAR_logo.png">
+					<p><a href="http://bearsunday.github.io/">bearsunday.github.io</a></p>
 				</section>
 
 			</div>
